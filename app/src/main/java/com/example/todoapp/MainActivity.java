@@ -2,18 +2,23 @@ package com.example.todoapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase bancoDados;
     public ListView listView;
+    FloatingActionButton btnCadastrar;
 
 
     @Override
@@ -22,9 +27,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = (ListView) findViewById(R.id.lista);
+        btnCadastrar = (FloatingActionButton) findViewById(R.id.btnCadastrar);
+
+        btnCadastrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abrirTelaCadastro();
+            }
+        });
 
         criarBancoDados();
-        //inserirDadosTemp();
+        // inserirDadosTemp();
         listarDados();
     }
 
@@ -93,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void abrirTelaCadastro(){
+        Intent intent = new Intent(this,CadastroActivity.class);
+        startActivity(intent);
     }
 
 }
