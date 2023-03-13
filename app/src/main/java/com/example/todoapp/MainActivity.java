@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase bancoDados;
     public ListView listView;
     FloatingActionButton btnCadastrar;
+    public ArrayList<Integer> arrayIds;
 
 
     @Override
@@ -36,10 +38,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                deletar(i);
+                return false;
+            }
+        });
+
         criarBancoDados();
         // inserirDadosTemp();
         listarDados();
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        listarDados();
+    }
+
+
 
 
     public void criarBancoDados(){
@@ -96,11 +114,11 @@ public class MainActivity extends AppCompatActivity {
                     linhas
             );
             listView.setAdapter(meuAdapter);
-            //arrayIds = new ArrayList<>();
+            arrayIds = new ArrayList<>();
             meuCursor.moveToFirst();
             do {
                 linhas.add(meuCursor.getString(0) + " - " + meuCursor.getString(1));
-                //arrayIds.add(meuCursor.getInt(0));
+                arrayIds.add(meuCursor.getInt(0));
             } while(meuCursor.moveToNext());
 
         }catch (Exception e){
@@ -111,6 +129,21 @@ public class MainActivity extends AppCompatActivity {
     public void abrirTelaCadastro(){
         Intent intent = new Intent(this,CadastroActivity.class);
         startActivity(intent);
+    }
+
+
+    public void deletar(Integer i){
+        try{
+            bancoDados = openOrCreateDatabase("todoapp", MODE_PRIVATE, null);
+            String sql = "DELETE FROM tarefa WHERE id =?";
+            SQLiteStatement stmt = bancoDados.compileStatement(sql);
+            stmt.bindLong(1, arrayIds.get(i));
+            stmt.executeUpdateDelete();
+            listarDados();
+            bancoDados.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 }
