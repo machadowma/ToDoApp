@@ -22,7 +22,7 @@ public class CadastroActivity extends AppCompatActivity {
 
         txtTitulo = (EditText) findViewById(R.id.txtTitulo);
         txtDescricao = (EditText) findViewById(R.id.txtDescricao);
-        btnCadastro = (Button) findViewById(R.id.btnCadastro);
+        btnCadastro = (Button) findViewById(R.id.btnAlterar);
 
         btnCadastro.setOnClickListener(new View.OnClickListener() {
             @Override

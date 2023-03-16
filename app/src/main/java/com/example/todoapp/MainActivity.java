@@ -42,7 +42,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 deletar(i);
-                return false;
+                return true;
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                alterar(i);
             }
         });
 
@@ -131,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void alterar(Integer i){
+        Intent intent = new Intent(this,AlterarActivity.class);
+        intent.putExtra("id",arrayIds.get(i));
+        startActivity(intent);
+    }
 
     public void deletar(Integer i){
         try{
